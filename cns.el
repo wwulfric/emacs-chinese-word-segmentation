@@ -411,15 +411,50 @@ enable `cns-mode' first"))
 
 (defun cns-backward-word-1 nil
   "Move backward a word just once."
-  (if (not (string-match "\\cC" (cns-get-word 'backward)))
-      (cns-backward-word-safe-1)
-    (cns-move 'backward)))
+  (cond
+   ((= (line-beginning-position) (point))
+    (backward-char))
+   ((> (point) (point-min))
+    (let ((char-before (char-before)))
+      (cond
+       ;; 空白字符
+       ((string-match-p "\\s-" (string char-before))
+        (skip-chars-backward " \t\n\r\f"))
+       ;; 标点符号
+       ((string-match-p "[[:punct:]]" (string char-before))
+        (skip-chars-backward "[:punct:]"))
+       ;; ASCII字符（非空白非标点）
+       ((and (< char-before 128)
+             (not (string-match-p "[[:space:][:punct:]]" (string char-before))))
+        (backward-word))
+       ;; 中文或其他字符
+       (t (cns-move 'backward)))))
+   ;; 在缓冲区开头
+   (t nil)))
 
 (defun cns-forward-word-1 nil
   "Move forward a word just once."
-  (if (not (string-match "\\cC" (cns-get-word 'forward)))
-      (forward-word)
-    (cns-move 'forward)))
+  (cond
+   ((= (line-end-position) (point))
+    (forward-char))
+   ((< (point) (point-max))
+    (let ((char-after (char-after)))
+      (cond
+       ;; 空白字符
+       ((string-match-p "\\s-" (string char-after))
+        (skip-chars-forward " \t\n\r\f"))
+       ;; 标点符号
+       ((string-match-p "[[:punct:]]" (string char-after))
+        (skip-chars-forward "[:punct:]"))
+       ;; ASCII字符（非空白非标点）
+       ((and (< char-after 128)
+             (not (string-match-p "[[:space:][:punct:]]" (string char-after))))
+        (forward-word))
+       ;; 中文或其他字符
+       (t (cns-move 'forward)))))
+   ;; 在缓冲区末尾
+   (t nil)))
+
 
 (defun cns-backward-word (&optional arg)
   "Move backward until encountering the beginning of a word.
