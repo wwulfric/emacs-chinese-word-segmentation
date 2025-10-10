@@ -498,14 +498,14 @@ If ARG is omitted or nil, move point forward one word."
 With argument ARG, do this that many times.  Word may be any
 combination of Chinese characters and non-Chinese characters."
   (interactive "p")
-  (kill-region (point) (progn (cns-backward-word arg) (point))))
+  (delete-region (point) (progn (cns-backward-word arg) (point))))
 
 (defun cns-kill-word (&optional arg)
   "Kill characters forward until encountering the end of a word.
 With argument ARG, do this that many times.  Word may be any
 combination of Chinese characters and non-Chinese characters."
   (interactive "p")
-  (kill-region (point) (progn (cns-forward-word arg) (point))))
+  (delete-region (point) (progn (cns-forward-word arg) (point))))
 
 (defun cns-region-nonword-p (pos1 pos2)
   "Return t if all characters within pos1 and pos2 are non-words
