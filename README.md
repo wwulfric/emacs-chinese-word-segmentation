@@ -166,3 +166,8 @@ export TRANSFORMERS_OFFLINE=1
 ## 致谢
 
 感谢优秀的开源中文分词项目：[结巴分词](https://github.com/yanyiwu/cppjieba)和[HanLP](https://github.com/hankcs/HanLP)。
+
+## 后端回归测试
+
+运行 `make test` 构建 `cnws` 并检查空行、CRLF、中文、ASCII 及补充平面
+Unicode 字符的行协议，需要 Python 3。返回的分词长度以字符计数，而不是 UTF-8 字节。

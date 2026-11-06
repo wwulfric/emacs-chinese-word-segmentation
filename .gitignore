@@ -4,3 +4,5 @@ cnws-server-jieba
 *.o
 *.a
 *.swp
+
+__pycache__/

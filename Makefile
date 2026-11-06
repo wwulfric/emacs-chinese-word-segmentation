@@ -7,6 +7,9 @@ ifeq ($(shell $(CXX) --version | grep -o clang), clang)
 endif
 
 all: cnws
+.PHONY: all test clean
+test: cnws
+	python3 -m unittest discover -s test -v
 cnws: cnws.cpp
 	$(CXX) $(CXXFLAGS) -Icppjieba/deps/limonp/include -Icppjieba/include -O3 -o cnws cnws.cpp
 clean:
